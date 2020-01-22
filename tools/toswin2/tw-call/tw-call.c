@@ -187,9 +187,6 @@ int main(int argc, char *argv[])
 	appl_init();
 	(void)Pdomain(1);
 
-	if (getcookie("nAES", &l))
-		naes = *(unsigned short *)l;
-
 	tw_id = find_tw();						/* TW2 suchen bzw. starten */
 	if (tw_id > 0)
 	{

@@ -17,6 +17,10 @@ include $(top_srcdir)/CONFIGVARS
 include $(top_srcdir)/RULES
 include $(top_srcdir)/PHONY
 
+ifeq (yes,$(LIBCMINI))
+INCLUDES := -I$(LIBCMINI_INCPATH) $(INCLUDES)
+endif
+
 all-here: build
 
 # default overwrites
@@ -43,8 +47,13 @@ VPATH = ..
 
 build: $(TARGET)
 
+ifneq (yes,$(LIBCMINI))
 $(TARGET): $(OBJS)
 	$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBS)
+else
+$(TARGET): $(OBJS)
+	$(CC) -I$(LIBCMINI_INCPATH) -nostdlib -o $@ $(CFLAGS) $(LIBCMINI_STARTUP) $(LDFLAGS) $(OBJS) -L $(LIBCMINI_LIBPATH) $(LIBS) -lcmini -lgcc
+endif
 
 # default dependencies
 # must be included last
